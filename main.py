@@ -19,7 +19,7 @@ while running:
     screen.fill("purple")
 
     player.draw(screen)
-    player.move(1920, 1080)  # update player's position based on keyboard input'
+    player.move(screen.get_size())  # update player's position based on keyboard input'
 
     # flip() the display to put your work on screen
     pygame.display.flip()

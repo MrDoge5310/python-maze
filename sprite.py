@@ -15,14 +15,14 @@ class Player(Sprite):
         super().__init__(image_path, position)
         self.step = 5
 
-    def move(self, win_width, win_height):
+    def move(self, win_size):
+        win_width, win_height = win_size
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and self.rect.x > 5:
             self.rect.x -= self.step
-        if keys[pygame.K_RIGHT] and self.rect.x < win_width - 64:
+        if keys[pygame.K_RIGHT] and self.rect.right <= win_width:
             self.rect.x += self.step
         if keys[pygame.K_UP] and self.rect.y > 5:
             self.rect.y -= self.step
-        if keys[pygame.K_DOWN] and self.rect.y < win_height - 64:
+        if keys[pygame.K_DOWN] and self.rect.bottom < win_height:
             self.rect.y += self.step
-
