@@ -4,6 +4,9 @@ import pygame
 class Sprite:
     def __init__(self, image_path, position=(0, 0)):
         self.image = pygame.image.load(image_path)
+        width = 100
+        height = 100
+        self.image = pygame.transform.scale(self.image, (width, height))
         self.rect = self.image.get_rect()
 
     def draw(self, scr):
@@ -26,3 +29,8 @@ class Player(Sprite):
             self.rect.y -= self.step
         if keys[pygame.K_DOWN] and self.rect.bottom < win_height:
             self.rect.y += self.step
+
+
+class Target(Sprite):
+    def __init__(self, image_path, position=(0, 0)):
+        super().__init__(image_path, position)

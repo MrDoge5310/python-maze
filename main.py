@@ -1,5 +1,6 @@
 import pygame
-from sprite import Player
+from sprite import Player, Target
+from maze import Maze
 
 
 pygame.init()
@@ -7,9 +8,13 @@ screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 
 player = Player('kapibara.png')
+target = Target('target.png')
+maze = Maze()
+maze.generate(screen.get_size())
+
+
 
 running = True
-
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -19,6 +24,8 @@ while running:
     screen.fill("purple")
 
     player.draw(screen)
+    target.draw(screen)
+    maze.draw(screen)
     player.move(screen.get_size())  # update player's position based on keyboard input'
 
     # flip() the display to put your work on screen
