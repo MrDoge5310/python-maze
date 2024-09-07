@@ -4,7 +4,7 @@ from maze import Maze
 
 
 pygame.init()
-screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 
 player = Player('kapibara.png')
@@ -26,7 +26,7 @@ while running:
     player.draw(screen)
     target.draw(screen)
     maze.draw(screen)
-    player.move(screen.get_size())  # update player's position based on keyboard input'
+    player.move(screen.get_size(), maze.grid)  # update player's position based on keyboard input'
 
     # flip() the display to put your work on screen
     pygame.display.flip()
