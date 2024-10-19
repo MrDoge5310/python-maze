@@ -4,10 +4,12 @@ import pygame
 class Sprite:
     def __init__(self, image_path, position=(0, 0)):
         self.image = pygame.image.load(image_path)
-        width = 100
-        height = 100
+        width = 50
+        height = 50
         self.image = pygame.transform.scale(self.image, (width, height))
         self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = position
+        self.rect.height -= 25
 
     def draw(self, scr):
         scr.blit(self.image, (self.rect.x, self.rect.y))
@@ -22,8 +24,7 @@ class Player(Sprite):
         for m in maze:
             if self.rect.colliderect(m):
                 return True
-            else:
-                return False
+        return False
 
     def move(self, win_size, maze):
         win_width, win_height = win_size
@@ -32,15 +33,15 @@ class Player(Sprite):
             self.rect.x -= self.step
             if self.checkCollide(maze):
                 self.rect.x += self.step
-        elif keys[pygame.K_RIGHT] and self.rect.right <= win_width:
+        if keys[pygame.K_RIGHT] and self.rect.right <= win_width:
             self.rect.x += self.step
             if self.checkCollide(maze):
                 self.rect.x -= self.step
-        elif keys[pygame.K_UP] and self.rect.y > 0:
+        if keys[pygame.K_UP] and self.rect.y > 0:
             self.rect.y -= self.step
             if self.checkCollide(maze):
                 self.rect.y += self.step
-        elif keys[pygame.K_DOWN] and self.rect.bottom < win_height:
+        if keys[pygame.K_DOWN] and self.rect.bottom < win_height:
             self.rect.y += self.step
             if self.checkCollide(maze):
                 print('down')
@@ -49,4 +50,10 @@ class Player(Sprite):
 
 class Target(Sprite):
     def __init__(self, image_path, position=(0, 0)):
+        position = (position[0] - 100, position[1] - 100)
         super().__init__(image_path, position)
+
+    def check_win(self, player):
+        if self.rect.colliderect(player.rect):
+            return True
+        return False
