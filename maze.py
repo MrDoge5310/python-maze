@@ -1,8 +1,9 @@
 import pygame
 import random
 
+
 class Maze:
-    def __init__(self, width=1180, height=800, block_size=70):
+    def __init__(self, width=1180, height=750, block_size=40):
         self.block_size = block_size
         self.grid_width = width // block_size
         self.grid_height = height // block_size
@@ -11,6 +12,7 @@ class Maze:
         self.grid = []  # Список для хранения блоков как объектов Rect
 
     def generate(self):
+        # Начинаем с левого верхнего угла
         start_x, start_y = 0, 0
         self.stack.append((start_x, start_y))
         self.visited[start_x][start_y] = True
@@ -31,6 +33,9 @@ class Maze:
             else:
                 self.stack.pop()
 
+        # Обеспечиваем наличие выхода в правом нижнем углу
+        self.ensure_exit()
+
     def get_neighbors(self, x, y):
         neighbors = []
         if x > 1 and not self.visited[x - 2][y]:
@@ -44,18 +49,28 @@ class Maze:
         return neighbors
 
     def add_block(self, x, y):
-        # Создаём объект Rect для блока и добавляем его в список
-        block = pygame.Rect(x * self.block_size + 50, y * self.block_size, self.block_size, self.block_size)
-        self.grid.append(block)
+        if x in range(self.grid_width - 4):
+            if y  in range (self.grid_height - self.block_size * 5, self.grid_height):
+                block = pygame.Rect(x * self.block_size + 50, y * self.block_size, self.block_size, self.block_size)
+                self.grid.append(block)
+
+    def ensure_exit(self):
+        # Правый нижний угол
+        exit_x = self.grid_width - 1
+        exit_y = self.grid_height - 1
+
+        # Убираем блоки, если они присутствуют в этих ячейках (вход и выход)
+        if (exit_x * self.block_size, exit_y * self.block_size) in [(block.x, block.y) for block in self.grid]:
+            self.grid = [block for block in self.grid if
+                         (block.x, block.y) != (exit_x * self.block_size, exit_y * self.block_size)]
+
+        # Также убираем блок в левом верхнем углу
+        if (0, 0) in [(block.x, block.y) for block in self.grid]:
+            self.grid = [block for block in self.grid if (block.x, block.y) != (0, 0)]
 
     def draw(self, scr):
-        win_width, win_height = scr.get_size()
-        # Вычисляем отступы для центрирования лабиринта
-        offset_x = (win_width - (self.grid_width * self.block_size)) // 2
-        offset_y = (win_height - (self.grid_height * self.block_size)) // 2
+
 
         for block in self.grid:
-
             # Сдвигаем каждый блок на offset_x и offset_y
-            # block = block.move(offset_x, offset_y)
             pygame.draw.rect(scr, (0, 0, 0), block)

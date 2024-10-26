@@ -4,8 +4,8 @@ import pygame
 class Sprite:
     def __init__(self, image_path, position=(0, 0)):
         self.image = pygame.image.load(image_path)
-        width = 50
-        height = 50
+        width = 40
+        height = 40
         self.image = pygame.transform.scale(self.image, (width, height))
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = position
@@ -52,6 +52,8 @@ class Target(Sprite):
     def __init__(self, image_path, position=(0, 0)):
         position = (position[0] - 100, position[1] - 100)
         super().__init__(image_path, position)
+        self.rect.width = 150
+        self.rect.height = 150
 
     def check_win(self, player):
         if self.rect.colliderect(player.rect):
